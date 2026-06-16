@@ -7,20 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
+@Service // Registra o serviço de Datasets dentro do container de Inversão de Controle do Spring
 public class DatasetServiceImpl implements DatasetService {
 
-    @Autowired
+    @Autowired // Localiza o DatasetsDAO que possui a conexão com o banco e o injeta aqui
     private DatasetsDAO datasetsDAO;
 
     @Override
     public List<Dataset> findAll() {
+        // Repassa a responsabilidade para a consulta "SELECT * FROM datasets" contida no DatasetsDAO
         return datasetsDAO.listar_datasets();
     }
 
     @Override
     public Dataset findById(int id) {
-        // Faz a ponte exata para a busca com filtro por id
+        // Aciona o método de busca parametrizada por ID (PreparedStatement.setInt) no seu DAO
         return datasetsDAO.buscar_identificador(id);
     }
 }
