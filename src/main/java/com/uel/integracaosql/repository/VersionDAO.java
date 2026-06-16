@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused","SqlNoDataSourceInspection"})
 
 @Repository
 
@@ -22,17 +22,17 @@ public class VersionDAO {
 
     public void insert_version(Version version){
 
-        String sql = "INSERT INTO version(id_dataset,id_creator,id_base_version,archive_path,changes) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO version(id_dataset,id_creator,id_base_version,archive_path,changes) VALUES(?,?,?,?,?)";
 
         try(Connection conn = dataSource.getConnection();
 
             PreparedStatement comando = conn.prepareStatement(sql)){
 
-            comando.setInt(2, version.getId_dataset());
-            comando.setInt(3,version.getId_creator());
-            comando.setInt(4,version.getId_base_version());
-            comando.setString(5,version.getArchive_path());
-            comando.setString(6,version.getChanges());
+            comando.setInt(1, version.getId_dataset());
+            comando.setInt(2,version.getId_creator());
+            comando.setInt(3,version.getId_base_version());
+            comando.setString(4,version.getArchive_path());
+            comando.setString(5,version.getChanges());
 
             comando.executeUpdate();
         }catch (SQLException message) {

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused","SqlNoDataSourceInspection"})
 
 @Repository // Informa ao spring boot que a classe terá acesso ao banco de dados
 
