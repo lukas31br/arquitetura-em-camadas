@@ -5,38 +5,25 @@ import com.uel.integracaosql.repository.UserDAO;
 import com.uel.integracaosql.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@Service // Permite ao Spring Boot reconhecer este componente de negócio (spring bean)
 public class UserServiceImpl implements UserService {
 
-    private final UserDAO userDAO;
-
-    @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+    @Autowired // Injetar automaticamente dependências necessárias
+    private UserDAO userDAO;
 
     @Override
     public List<Users> findAll() {
-        return userDAO.findAll();
-    }
-
-    @Override
-    public Optional<Users> findById(Long id) {
-        return userDAO.findById(id);
+        // Conecta o método em inglês solicitado pelo Controller com a sua listagem em português
+        return userDAO.listar_users();
     }
 
     @Override
     public Users save(Users user) {
-        // You can add business rules here (e.g., password encryption, validation)
-        return userDAO.save(user);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        userDAO.deleteById(id);
+        // Realiza o cadastro utilizando a conexão JDBC manual do seu DAO
+        userDAO.cadastro_usuario(user);
+        // Como o método DAO é 'void', retorna o próprio objeto populado para o Controller
+        return user;
     }
 }

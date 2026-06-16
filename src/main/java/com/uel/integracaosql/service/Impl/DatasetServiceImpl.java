@@ -5,37 +5,22 @@ import com.uel.integracaosql.repository.DatasetsDAO;
 import com.uel.integracaosql.service.DatasetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DatasetServiceImpl implements DatasetService {
 
-    private final DatasetsDAO datasetsDAO;
-
     @Autowired
-    public DatasetServiceImpl(DatasetsDAO datasetsDAO) {
-        this.datasetsDAO = datasetsDAO;
-    }
+    private DatasetsDAO datasetsDAO;
 
     @Override
     public List<Dataset> findAll() {
-        return datasetsDAO.findAll();
+        return datasetsDAO.listar_datasets();
     }
 
     @Override
-    public Optional<Dataset> findById(Long id) {
-        return datasetsDAO.findById(id);
-    }
-
-    @Override
-    public Dataset save(Dataset dataset) {
-        return datasetsDAO.save(dataset);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        datasetsDAO.deleteById(id);
+    public Dataset findById(int id) {
+        // Faz a ponte exata para a busca com filtro por id
+        return datasetsDAO.buscar_identificador(id);
     }
 }
