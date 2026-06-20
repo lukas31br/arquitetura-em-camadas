@@ -126,5 +126,50 @@ public class VersionDAO {
         return null;
     }
 
+    public void updateVersion(Version version){
+        String sql = "UPDATE version SET id_dataset = ?, id_creator = ?,id_base_version = ?, archive_path = ?, changes = ? WHERE id_version = ?";
+
+        try( Connection conn = dataSource.getConnection();
+            PreparedStatement comando = conn.prepareStatement(sql)){
+
+            comando.setInt(1, version.getId_dataset());
+            comando.setInt(2, version.getId_creator());
+            comando.setInt(3, version.getId_base_version());
+            comando.setString(4, version.getArchive_path());
+            comando.setString(5, version.getChanges());
+            comando.setInt(6, version.getId_version());
+
+            int lines = comando.executeUpdate();
+
+            if(lines == 0){
+                System.out.println("Theres´s not version found by this id");
+            }
+
+        } catch (SQLException message){
+            System.out.println("ERROR!! Can't update version");
+            throw new RuntimeException(message);
+        }
+    }
+
+    public void deleteVersion(int id){
+
+        String sql = "DELETE FROM version WHERE id_version = ?";
+
+        try( Connection conn = dataSource.getConnection();
+            PreparedStatement comando = conn.prepareStatement(sql)){
+
+            comando.setInt(1, id);
+
+            int lines = comando.executeUpdate();
+
+            if (lines == 0){
+            System.out.println("There´s not version found by this id ");
+            }
+        } catch (SQLException message){
+
+            System.out.println("ERROR!! Can't delete version");
+            throw new RuntimeException(message);
+        }
+    }
 
 }
