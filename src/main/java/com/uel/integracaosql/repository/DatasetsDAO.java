@@ -3,6 +3,7 @@ import com.uel.integracaosql.model.Dataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -92,6 +93,8 @@ public class DatasetsDAO{ // Cria a classe DataSetsDAO
 
                 dataset.setId_creator(result.getInt("id_creator"));
 
+                dataset.setDate_hour(result.getObject("date_hour", LocalDateTime.class));
+
                 lista.add(dataset);
 
             }
@@ -125,6 +128,7 @@ public class DatasetsDAO{ // Cria a classe DataSetsDAO
                     dataset.setDescription(resultado.getString("description"));
                     dataset.setSource(resultado.getString("source"));
                     dataset.setId_creator(resultado.getInt("id_creator"));
+                    dataset.setDate_hour(resultado.getObject("date_hour", LocalDateTime.class));
                     return dataset;
                 } else {
                     System.out.print("ERROR");

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class VersionDAO {
 
     public void insert_version(Version version){
 
-        String sql = "INSERT INTO version(id_dataset,id_creator,id_base_version,archive_path,changes) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO version(id_dataset,id_creator,id_version_base,archive_path,changes) VALUES(?,?,?,?,?)";
 
         try(Connection conn = dataSource.getConnection();
 
@@ -30,7 +31,7 @@ public class VersionDAO {
 
             comando.setInt(1, version.getId_dataset());
             comando.setInt(2,version.getId_creator());
-            comando.setInt(3,version.getId_base_version());
+            comando.setInt(3,version.getId_version_base());
             comando.setString(4,version.getArchive_path());
             comando.setString(5,version.getChanges());
 
@@ -64,11 +65,13 @@ public class VersionDAO {
 
                 version.setId_creator(result.getInt("id_creator"));
 
-                version.setId_base_version(result.getInt("id_base_version"));
+                version.setId_version_base(result.getInt("id_version_base"));
 
                 version.setArchive_path(result.getString("archive_path"));
 
                 version.setChanges(result.getString("changes"));
+
+                version.setCreation_date(result.getObject("creation_date", LocalDateTime.class));
 
                 lista.add(version);
 
@@ -106,11 +109,13 @@ public class VersionDAO {
 
                     version.setId_creator(resultado.getInt("id_creator"));
 
-                    version.setId_base_version(resultado.getInt("id_base_version"));
+                    version.setId_version_base(resultado.getInt("id_version_base"));
 
                     version.setArchive_path(resultado.getString("archive_path"));
 
                     version.setChanges(resultado.getString("changes"));
+
+                    version.setCreation_date(resultado.getObject("creation_date", LocalDateTime.class));
 
                     return version;
                 } else {
@@ -127,14 +132,14 @@ public class VersionDAO {
     }
 
     public void updateVersion(Version version){
-        String sql = "UPDATE version SET id_dataset = ?, id_creator = ?,id_base_version = ?, archive_path = ?, changes = ? WHERE id_version = ?";
+        String sql = "UPDATE version SET id_dataset = ?, id_creator = ?,id_version_base = ?, archive_path = ?, changes = ? WHERE id_version = ?";
 
         try( Connection conn = dataSource.getConnection();
             PreparedStatement comando = conn.prepareStatement(sql)){
 
             comando.setInt(1, version.getId_dataset());
             comando.setInt(2, version.getId_creator());
-            comando.setInt(3, version.getId_base_version());
+            comando.setInt(3, version.getId_version_base());
             comando.setString(4, version.getArchive_path());
             comando.setString(5, version.getChanges());
             comando.setInt(6, version.getId_version());

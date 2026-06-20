@@ -12,7 +12,7 @@ public class Version {
 
     private int id_creator;
 
-    private int id_base_version;
+    private int id_version_base;
 
     private LocalDateTime creation_date;
 
@@ -36,12 +36,12 @@ public class Version {
         return id_dataset;
     }
 
-    public void setId_base_version(int id_base_version){
-        this.id_base_version = id_base_version;
+    public void setId_version_base(int id_version_base){
+        this.id_version_base = id_version_base;
     }
 
-    public Integer getId_base_version(){
-        return id_base_version;
+    public Integer getId_version_base(){
+        return id_version_base;
     }
 
     public void setId_creator(int id_creator){
