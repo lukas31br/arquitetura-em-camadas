@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController // Transforma esta classe em um componente REST que recebe JSON e responde JSON
 @RequestMapping("/api/users") // Define que qualquer requisição que comece com '/api/users' cairá aqui
+@CrossOrigin(origins = "*")
 public class UserController {
 
     // Dependência da nossa Interface de serviço (Garante o desacoplamento das camadas)

@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController // Transforma a classe em uma API REST capaz de aceitar e processar requisições HTTP (JSON)
 @RequestMapping("/api/datasets") // Define a rota HTTP base padrão para acessar este controlador
+@CrossOrigin(origins = "*")
 public class DatasetController {
 
     // Dependência da interface de negócio (Seguindo o princípio de inversão de dependências)
