@@ -13,4 +13,6 @@ public interface DatasetService {
 
     // Contrato para buscar um dataset único filtrado pelo seu ID numérico
     Dataset findById(int id);
+
+    void save(Dataset dataset);
 }

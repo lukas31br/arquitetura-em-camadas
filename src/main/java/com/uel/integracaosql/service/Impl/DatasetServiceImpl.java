@@ -24,4 +24,9 @@ public class DatasetServiceImpl implements DatasetService {
         // Aciona o método de busca parametrizada por ID (PreparedStatement.setInt) no seu DAO
         return datasetsDAO.buscar_identificador(id);
     }
+
+    @Override 
+    public void save(Dataset dataset) {
+        datasetsDAO.inserir_dataset(dataset);
+    }
 }

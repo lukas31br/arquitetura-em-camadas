@@ -11,7 +11,7 @@
 
 <nav class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
     <div class="flex items-center space-x-3">
-        <i class="fa-solid : database text-indigo-500 text-2xl"></i>
+        <i class="fa-solid fa-database text-indigo-500 text-2xl"></i>
         <span class="text-xl font-bold tracking-wider text-white">FEATURE STORE</span>
     </div>
     <div class="text-sm bg-gray-900 px-3 py-1.5 rounded-full border border-gray-700 flex items-center space-x-2">
@@ -24,7 +24,7 @@
 
     <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl h-fit">
         <div class="flex items-center space-x-2 mb-6">
-            <i class="fa-solid : user-plus text-indigo-400 text-lg"></i>
+            <i class="fa-solid fa-user-plus text-indigo-400 text-lg"></i>
             <h2 class="text-lg font-bold text-white">Cadastrar Novo Usuário</h2>
         </div>
 
@@ -46,7 +46,7 @@
             </div>
             <button type="submit"
                     class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 mt-2">
-                <i class="fa-solid : save"></i>
+                <i class="fa-solid fa-save"></i>
                 <span>Salvar no PostgreSQL</span>
             </button>
         </form>
@@ -58,11 +58,11 @@
         <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl overflow-hidden">
             <div class="px-6 py-4 bg-gray-800/50 border-b border-gray-700 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-solid : users text-indigo-400"></i>
+                    <i class="fa-solid fa-users text-indigo-400"></i>
                     <h3 class="font-bold text-white">Usuários no Schema (feature_store)</h3>
                 </div>
                 <button onclick="carregarUsuarios()" class="text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-1.5 rounded transition-colors">
-                    <i class="fa-solid : rotate-right mr-1"></i> Atualizar
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Atualizar
                 </button>
             </div>
             <div class="overflow-x-auto">
@@ -83,7 +83,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 shadow-xl">
                 <h4 class="font-bold text-white mb-3 flex items-center space-x-2">
-                    <i class="fa-solid : folder-open text-amber-400 text-sm"></i>
+                    <i class="fa-solid fa-folder-open text-amber-400 text-sm"></i>
                     <span>Últimos Datasets</span>
                 </h4>
                 <ul id="datasetsList" class="space-y-2 text-xs text-gray-400 max-h-40 overflow-y-auto divide-y divide-gray-700/40">
@@ -92,7 +92,7 @@
 
             <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 shadow-xl">
                 <h4 class="font-bold text-white mb-3 flex items-center space-x-2">
-                    <i class="fa-solid : code-branch text-emerald-400 text-sm"></i>
+                    <i class="fa-solid fa-code-branch text-emerald-400 text-sm"></i>
                     <span>Histórico de Versões</span>
                 </h4>
                 <ul id="versionsList" class="space-y-2 text-xs text-gray-400 max-h-40 overflow-y-auto divide-y divide-gray-700/40">
@@ -113,7 +113,7 @@
             const usuarios = await resposta.json();
 
             const tbody = document.getElementById('usuariosTable');
-            tbody.innerHTML = ''; // Limpa a tabela
+            tbody.innerHTML = '';
 
             if (usuarios.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-8 text-center text-gray-500 italic">Nenhum usuário cadastrado no banco ainda.</td></tr>`;
@@ -124,7 +124,7 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-700/30 transition-colors";
                 tr.innerHTML = `
-                        <td class="px-6 py-3.5 font-mono text-indigo-400 font-semibold">${user.id || user.id_users || 'N/A'}</td>
+                        <td class="px-6 py-3.5 font-mono text-indigo-400 font-semibold">${user.id_users || 'N/A'}</td>
                         <td class="px-6 py-3.5 text-white font-medium">${user.name}</td>
                         <td class="px-6 py-3.5 text-gray-300">${user.email}</td>
                     `;
@@ -156,19 +156,19 @@
 
             if (resposta.ok) {
                 feedbackBox.className = "mt-4 text-xs p-3 rounded-lg text-center font-medium bg-emerald-900/50 text-emerald-300 block";
-                feedbackBox.innerHTML = '<i class="fa-solid : check-circle mr-1"></i> Cadastrado com sucesso no PostgreSQL!';
+                feedbackBox.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Cadastrado com sucesso no PostgreSQL!';
                 document.getElementById('userForm').reset();
-
-                // Recarrega a tabela imediatamente para mostrar o novo usuário
                 carregarUsuarios();
             } else {
                 throw new Error("Erro na resposta do servidor");
             }
         } catch (erro) {
             feedbackBox.className = "mt-4 text-xs p-3 rounded-lg text-center font-medium bg-red-900/50 text-red-300 block";
-            feedbackBox.innerHTML = '<i class="fa-solid : triangles-gradient mr-1"></i> Falha ao salvar usuário.';
+            feedbackBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Falha ao salvar usuário.';
         }
-        carregarUsuarios();
+    });
+
+    carregarUsuarios();
 </script>
 </body>
 </html>

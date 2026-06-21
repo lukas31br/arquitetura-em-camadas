@@ -39,4 +39,10 @@ public class DatasetController {
         // Se o id não corresponder a nada e voltar null, devolve uma resposta limpa com HTTP 404 Not Found
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping 
+    public ResponseEntity<String> createDataset(@RequestBody Dataset dataset) {
+        datasetService.save(dataset);
+        return ResponseEntity.ok("Dataset cadastrado com sucesso no banco de dados!");
+    }
 }
