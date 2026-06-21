@@ -3,58 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feature Store - Dashboard</title>
+    <title>Feature Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col justify-between">
 
-<nav class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-        <i class="fa-solid fa-database text-indigo-500 text-2xl"></i>
-        <span class="text-xl font-bold tracking-wider text-white">FEATURE STORE</span>
-    </div>
-    <div class="text-sm bg-gray-900 px-3 py-1.5 rounded-full border border-gray-700 flex items-center space-x-2">
-        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-        <span class="text-gray-400 font-medium">Backend Localhost:8080 Conectado</span>
-    </div>
-</nav>
+<!-- ===== TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO DE USUÁRIO) ===== -->
+<div id="authContainer" class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl w-full max-w-md transition-all">
 
-<div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl h-fit">
-        <div class="flex items-center space-x-2 mb-6">
-            <i class="fa-solid fa-user-plus text-indigo-400 text-lg"></i>
-            <h2 class="text-lg font-bold text-white">Cadastrar Novo Usuário</h2>
+        <div class="flex flex-col items-center mb-8">
+            <i class="fa-solid fa-database text-indigo-500 text-4xl mb-3"></i>
+            <h1 class="text-2xl font-bold tracking-wider text-white">FEATURE STORE</h1>
+            <p id="authSubtitle" class="text-gray-400 text-sm mt-1">Faça login para acessar o painel</p>
         </div>
 
-        <form id="userForm" class="space-y-4">
+        <!-- FORMULÁRIO DE LOGIN -->
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">E-mail</label>
+                <input type="email" id="loginEmail" required placeholder="seu@email.com"
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:bg-gray-600 transition-colors">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Senha</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••"
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:bg-gray-600 transition-colors">
+            </div>
+            <button type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Entrar no Sistema</span>
+            </button>
+            <div class="text-center mt-4">
+                <button type="button" onclick="alternarAuth(true)" class="text-xs text-indigo-400 hover:underline">
+                    Não tem conta? Cadastre-se aqui
+                </button>
+            </div>
+        </form>
+
+        <!-- FORMULÁRIO DE CADASTRO -->
+        <form id="userForm" class="space-y-4 hidden">
             <div>
                 <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Nome Completo</label>
-                <input type="text" id="userName" required placeholder="Ex: João Guilherme"
-                       class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none border-indigo-500 transition-colors">
+                <input type="text" id="userName" placeholder="Ex: João Guilherme"
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:bg-gray-600 transition-colors">
             </div>
             <div>
                 <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">E-mail</label>
-                <input type="email" id="userEmail" required placeholder="Ex: joao@email.com"
-                       class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none border-indigo-500 transition-colors">
+                <input type="email" id="userEmail" placeholder="Ex: joao@email.com"
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:bg-gray-600 transition-colors">
             </div>
             <div>
                 <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Senha do Sistema</label>
-                <input type="password" id="userPassword" required placeholder="••••••••"
-                       class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none border-indigo-500 transition-colors">
+                <input type="password" id="userPassword" placeholder="••••••••"
+                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:bg-gray-600 transition-colors">
             </div>
             <button type="submit"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 mt-2">
-                <i class="fa-solid fa-save"></i>
-                <span>Salvar no PostgreSQL</span>
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Confirmar Cadastro</span>
             </button>
+            <div class="text-center mt-4">
+                <button type="button" onclick="alternarAuth(false)" class="text-xs text-gray-400 hover:underline">
+                    Voltar para o Login
+                </button>
+            </div>
         </form>
-        <div id="formFeedback" class="hidden mt-4 text-xs p-3 rounded-lg text-center font-medium"></div>
+
+        <div id="authFeedback" class="hidden mt-4 text-xs p-3 rounded-lg text-center font-medium"></div>
+    </div>
+</div>
+
+
+<!-- ===== DASHBOARD PRINCIPAL ===== -->
+<div id="dashboardContainer" class="hidden">
+    <nav class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-database text-indigo-500 text-2xl"></i>
+            <span class="text-xl font-bold tracking-wider text-white">FEATURE STORE</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="text-sm bg-gray-900 px-3 py-1.5 rounded-full border border-gray-700 flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-gray-400 font-medium">Painel Conectado</span>
+            </div>
+            <button onclick="logout()" class="text-xs bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-1.5 rounded border border-red-700/50 transition-colors">
+                <i class="fa-solid fa-power-off"></i> Sair
+            </button>
+        </div>
+    </nav>
+
+    <!-- FORMULÁRIOS -->
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- DATASET -->
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl h-fit">
+            <div class="flex items-center space-x-2 mb-6">
+                <i class="fa-solid fa-folder-plus text-amber-400 text-lg"></i>
+                <h2 class="text-lg font-bold text-white">Cadastrar Novo Dataset</h2>
+            </div>
+            <form id="datasetForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">ID do Criador</label>
+                    <input type="number" id="datasetCreator" required placeholder="Ex: 1"
+                           class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Descrição</label>
+                    <input type="text" id="datasetDescription" required placeholder="Ex: Previsão de Churn"
+                           class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Origem/Fonte</label>
+                    <input type="text" id="datasetSource" placeholder="Ex: CRM Interno"
+                           class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 mt-2">
+                    <i class="fa-solid fa-save"></i> <span>Salvar Dataset</span>
+                </button>
+            </form>
+            <div id="datasetFeedback" class="hidden mt-4 text-xs p-3 rounded-lg text-center font-medium"></div>
+        </div>
+
+        <!-- VERSÃO -->
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl h-fit">
+            <div class="flex items-center space-x-2 mb-6">
+                <i class="fa-solid fa-code-branch text-emerald-400 text-lg"></i>
+                <h2 class="text-lg font-bold text-white">Cadastrar Nova Versão</h2>
+            </div>
+            <form id="versionForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">ID Dataset</label>
+                        <input type="number" id="versionDataset" required placeholder="1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:bg-gray-600 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">ID Criador</label>
+                        <input type="number" id="versionCreator" required placeholder="1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:bg-gray-600 transition-colors">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">ID Versão Base (opcional)</label>
+                    <input type="number" id="versionBase" placeholder="Vazio se for a original" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Caminho do CSV</label>
+                    <input type="text" id="versionPath" required placeholder="/storage/v1/dados.csv" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Descrição das Mudanças</label>
+                    <input type="text" id="versionChanges" placeholder="Normalização dos dados" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:bg-gray-600 transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 mt-2">
+                    <i class="fa-solid fa-save"></i> <span>Salvar Versão</span>
+                </button>
+            </form>
+            <div id="versionFeedback" class="hidden mt-4 text-xs p-3 rounded-lg text-center font-medium"></div>
+        </div>
     </div>
 
-    <div class="lg:col-span-2 space-y-8">
-
+    <!-- TABELAS -->
+    <div class="max-w-7xl mx-auto px-4 pb-8 space-y-8">
+        <!-- TABELA USUÁRIOS -->
         <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl overflow-hidden">
             <div class="px-6 py-4 bg-gray-800/50 border-b border-gray-700 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
@@ -68,107 +179,218 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-sm">
                     <thead>
-                    <tr class="bg-gray-900/50 text-gray-400 font-semibold border-b border-gray-700 text-xs uppercase tracking-wider">
+                    <tr class="bg-gray-900 text-gray-400 font-semibold border-b border-gray-700 text-xs uppercase tracking-wider">
                         <th class="px-6 py-3">ID (id_users)</th>
                         <th class="px-6 py-3">Nome</th>
                         <th class="px-6 py-3">E-mail</th>
                     </tr>
                     </thead>
-                    <tbody id="usuariosTable" class="divide-y divide-gray-700/60">
-                    </tbody>
+                    <tbody id="usuariosTable" class="divide-y divide-gray-700/60"></tbody>
                 </table>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 shadow-xl">
-                <h4 class="font-bold text-white mb-3 flex items-center space-x-2">
-                    <i class="fa-solid fa-folder-open text-amber-400 text-sm"></i>
-                    <span>Últimos Datasets</span>
-                </h4>
-                <ul id="datasetsList" class="space-y-2 text-xs text-gray-400 max-h-40 overflow-y-auto divide-y divide-gray-700/40">
-                </ul>
+        <!-- TABELA DATASETS -->
+        <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl overflow-hidden">
+            <div class="px-6 py-4 bg-gray-800/50 border-b border-gray-700 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-folder-open text-amber-400"></i>
+                    <h3 class="font-bold text-white">Datasets Cadastrados</h3>
+                </div>
+                <button onclick="carregarDatasets()" class="text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-1.5 rounded transition-colors">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Atualizar
+                </button>
             </div>
-
-            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 shadow-xl">
-                <h4 class="font-bold text-white mb-3 flex items-center space-x-2">
-                    <i class="fa-solid fa-code-branch text-emerald-400 text-sm"></i>
-                    <span>Histórico de Versões</span>
-                </h4>
-                <ul id="versionsList" class="space-y-2 text-xs text-gray-400 max-h-40 overflow-y-auto divide-y divide-gray-700/40">
-                </ul>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                    <tr class="bg-gray-900 text-gray-400 font-semibold border-b border-gray-700 text-xs uppercase tracking-wider">
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Descrição</th>
+                        <th class="px-6 py-3">Fonte / Origem</th>
+                        <th class="px-6 py-3">Criador (ID)</th>
+                        <th class="px-6 py-3">Data de Inclusão</th>
+                    </tr>
+                    </thead>
+                    <tbody id="datasetsTable" class="divide-y divide-gray-700/60"></tbody>
+                </table>
             </div>
         </div>
-
     </div>
 </div>
 
 <script>
     const API_BASE_URL = 'http://localhost:8080/api';
 
-    // 1. CARREGAR LISTA DE USUÁRIOS (GET)
-    async function carregarUsuarios() {
-        try {
-            const resposta = await fetch(`${API_BASE_URL}/users`);
-            const usuarios = await resposta.json();
+    function mostrarFeedback(elementId, sucesso, mensagem) {
+        const box = document.getElementById(elementId);
+        const cor = sucesso ? "bg-emerald-900/40 text-emerald-300 border border-emerald-800" : "bg-red-900/40 text-red-300 border border-red-800";
+        box.className = `mt-4 text-xs p-3 rounded-lg text-center font-medium ${cor} block`;
+        box.innerHTML = sucesso
+            ? `<i class="fa-solid fa-circle-check mr-1"></i> ${mensagem}`
+            : `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${mensagem}`;
+    }
 
-            const tbody = document.getElementById('usuariosTable');
-            tbody.innerHTML = '';
+    function alternarAuth(queroCadastrar) {
+        const loginForm = document.getElementById('loginForm');
+        const userForm = document.getElementById('userForm');
+        const subtitle = document.getElementById('authSubtitle');
+        document.getElementById('authFeedback').className = "hidden";
 
-            if (usuarios.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-8 text-center text-gray-500 italic">Nenhum usuário cadastrado no banco ainda.</td></tr>`;
-                return;
-            }
-
-            usuarios.forEach(user => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-700/30 transition-colors";
-                tr.innerHTML = `
-                        <td class="px-6 py-3.5 font-mono text-indigo-400 font-semibold">${user.id_users || 'N/A'}</td>
-                        <td class="px-6 py-3.5 text-white font-medium">${user.name}</td>
-                        <td class="px-6 py-3.5 text-gray-300">${user.email}</td>
-                    `;
-                tbody.appendChild(tr);
-            });
-        } catch (erro) {
-            console.error("Erro ao buscar usuários:", erro);
+        if (queroCadastrar) {
+            loginForm.classList.add('hidden');
+            userForm.classList.remove('hidden');
+            subtitle.textContent = "Crie sua conta no sistema";
+            document.getElementById('userName').required = true;
+            document.getElementById('userEmail').required = true;
+            document.getElementById('userPassword').required = true;
+        } else {
+            userForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            subtitle.textContent = "Faça login para acessar o painel";
+            document.getElementById('userName').required = false;
+            document.getElementById('userEmail').required = false;
+            document.getElementById('userPassword').required = false;
         }
     }
 
-    // 2. ENVIAR FORMULÁRIO DE CADASTRO (POST)
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const senhaInput = document.getElementById('loginPassword').value;
+
+        try {
+            const resposta = await fetch(`${API_BASE_URL}/users`);
+            const usuarios = await resposta.json();
+            const usuarioValido = usuarios.find(u => u.email === email && u.password === senhaInput);
+
+            if (usuarioValido) {
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('dashboardContainer').classList.remove('hidden');
+                carregarUsuarios();
+                carregarDatasets();
+            } else {
+                mostrarFeedback('authFeedback', false, 'E-mail ou senha incorretos.');
+            }
+        } catch (erro) {
+            mostrarFeedback('authFeedback', false, 'Erro ao conectar ao Backend.');
+        }
+    });
+
     document.getElementById('userForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const feedbackBox = document.getElementById('formFeedback');
         const name = document.getElementById('userName').value;
         const email = document.getElementById('userEmail').value;
         const password = document.getElementById('userPassword').value;
-
-        feedbackBox.className = "mt-4 text-xs p-3 rounded-lg text-center font-medium bg-indigo-900/50 text-indigo-300 block";
-        feedbackBox.textContent = "Processando transação JDBC...";
-
         try {
             const resposta = await fetch(`${API_BASE_URL}/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
             });
-
             if (resposta.ok) {
-                feedbackBox.className = "mt-4 text-xs p-3 rounded-lg text-center font-medium bg-emerald-900/50 text-emerald-300 block";
-                feedbackBox.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Cadastrado com sucesso no PostgreSQL!';
+                mostrarFeedback('authFeedback', true, 'Usuário cadastrado! Faça o login agora.');
                 document.getElementById('userForm').reset();
-                carregarUsuarios();
-            } else {
-                throw new Error("Erro na resposta do servidor");
-            }
-        } catch (erro) {
-            feedbackBox.className = "mt-4 text-xs p-3 rounded-lg text-center font-medium bg-red-900/50 text-red-300 block";
-            feedbackBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Falha ao salvar usuário.';
-        }
+                setTimeout(() => alternarAuth(false), 1500);
+            } else { throw new Error(); }
+        } catch { mostrarFeedback('authFeedback', false, 'E-mail já existente ou falha no banco.'); }
     });
 
-    carregarUsuarios();
+    function logout() {
+        document.getElementById('dashboardContainer').classList.add('hidden');
+        document.getElementById('authContainer').classList.remove('hidden');
+        document.getElementById('loginForm').reset();
+        alternarAuth(false);
+    }
+
+    async function carregarUsuarios() {
+        try {
+            const resposta = await fetch(`${API_BASE_URL}/users`);
+            const usuarios = await resposta.json();
+            const tbody = document.getElementById('usuariosTable');
+            tbody.innerHTML = '';
+
+            usuarios.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-700/40 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-6 py-3.5 font-mono text-indigo-400 font-semibold">${user.id_users || user.idUsers || 'N/A'}</td>
+                    <td class="px-6 py-3.5 text-white font-medium">${user.name}</td>
+                    <td class="px-6 py-3.5 text-gray-300">${user.email}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (erro) { console.error(erro); }
+    }
+
+    async function carregarDatasets() {
+        try {
+            const resposta = await fetch(`${API_BASE_URL}/datasets`);
+            const datasets = await resposta.json();
+            const tbody = document.getElementById('datasetsTable');
+            tbody.innerHTML = '';
+
+            datasets.forEach(ds => {
+                const dataRaw = ds.date_hour || ds.dateHour;
+                let dataFormatada = '-';
+
+                if (dataRaw) {
+                    if (Array.isArray(dataRaw)) {
+                        const [ano, mes, dia, hora, min, seg] = dataRaw;
+                        const dataObjeto = new Date(ano, (mes - 1) || 0, dia || 1, hora || 0, min || 0, seg || 0);
+                        dataFormatada = dataObjeto.toLocaleString('pt-BR');
+                    } else {
+                        const dataObjeto = new Date(dataRaw);
+                        if (!isNaN(dataObjeto.getTime())) {
+                            dataFormatada = dataObjeto.toLocaleString('pt-BR');
+                        }
+                    }
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-700/40 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-6 py-3.5 font-mono text-amber-400 font-semibold">${ds.id_datasets || ds.idDatasets || 'N/A'}</td>
+                    <td class="px-6 py-3.5 text-white font-medium">${ds.description}</td>
+                    <td class="px-6 py-3.5 text-gray-300">${ds.source || '-'}</td>
+                    <td class="px-6 py-3.5 text-gray-300">${ds.id_creator || ds.idCreator}</td>
+                    <td class="px-6 py-3.5 text-emerald-400 font-medium text-xs">${dataFormatada}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (erro) { console.error(erro); }
+    }
+
+    // CADASTRO DE DATASET (ENVIANDO DATA HORA ATUAL)
+    document.getElementById('datasetForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id_creator = parseInt(document.getElementById('datasetCreator').value);
+        const description = document.getElementById('datasetDescription').value;
+        const source = document.getElementById('datasetSource').value;
+
+        // Gera o timestamp no formato ISO aceito nativamente pelo Spring/PostgreSQL (Ex: 2026-06-21T16:28:40)
+        const dataAtualIso = new Date().toISOString();
+
+        try {
+            const resposta = await fetch(`${API_BASE_URL}/datasets`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_creator,
+                    idCreator: id_creator,
+                    description,
+                    source,
+                    date_hour: dataAtualIso,
+                    dateHour: dataAtualIso
+                })
+            });
+            if (resposta.ok) {
+                mostrarFeedback('datasetFeedback', true, 'Dataset salvo!');
+                document.getElementById('datasetForm').reset();
+                carregarDatasets();
+            } else { throw new Error(); }
+        } catch { mostrarFeedback('datasetFeedback', false, 'Falha ao salvar dataset.'); }
+    });
 </script>
 </body>
 </html>
