@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 
 public class Version {
 
-    private int id_version;
+    private Integer id_version;
 
-    private int id_dataset;
+    private Integer id_dataset;
 
-    private int id_creator;
+    private Integer id_creator;
 
-    private int id_version_base;
+    private Integer id_version_base;
 
     private LocalDateTime creation_date;
 
@@ -20,7 +20,8 @@ public class Version {
 
     private String changes;
 
-    public void setId_version(int id_version){
+    public void setId_version(Integer id_version){
+
         this.id_version = id_version;
     }
 
@@ -28,7 +29,8 @@ public class Version {
         return id_version;
     }
 
-    public void setId_dataset(int id_dataset){
+    public void setId_dataset(Integer id_dataset){
+
         this.id_dataset = id_dataset;
     }
 
@@ -36,7 +38,8 @@ public class Version {
         return id_dataset;
     }
 
-    public void setId_version_base(int id_version_base){
+    public void setId_version_base(Integer id_version_base){
+
         this.id_version_base = id_version_base;
     }
 
@@ -44,7 +47,8 @@ public class Version {
         return id_version_base;
     }
 
-    public void setId_creator(int id_creator){
+    public void setId_creator(Integer id_creator){
+
         this.id_creator = id_creator;
     }
 

@@ -8,4 +8,5 @@ public interface VersionService {
     void save(Version version);
     List<Version> findAll();
     Version findById(int id);
+    void delete(int id);
 }

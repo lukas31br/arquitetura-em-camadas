@@ -45,4 +45,10 @@ public class VersionController {
         // Como a rotina JDBC nativa do insert é void, retornamos uma mensagem de sucesso textual
         return ResponseEntity.ok("Versão cadastrada com sucesso no banco de dados!");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVersion(@PathVariable int id) {
+        versionService.delete(id);
+        return ResponseEntity.ok("Versão deletada com sucesso!");
+    }
 }

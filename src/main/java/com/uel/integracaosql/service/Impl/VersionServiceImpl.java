@@ -33,4 +33,9 @@ public class VersionServiceImpl implements VersionService {
         // Faz a ponte com o método de busca por identificador do JDBC manual
         return versionDAO.buscarIdentificador(id);
     }
+
+    @Override // ✅ novo método
+    public void delete(int id) {
+        versionDAO.deleteVersion(id);
+    }
 }
