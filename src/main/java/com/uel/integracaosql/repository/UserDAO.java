@@ -33,7 +33,7 @@ public class UserDAO { // Nome do arquivo
     public void cadastro_usuario(Users users) { // Método para cadastrar um usuário
                                                    // Method for sign up a user
 
-        String sql = "INSERT INTO users (name,password, email) VALUES (?,?,?)"; // Código em texto que posteriormente será aplicado ao postgresql
+        String sql = "INSERT INTO users (id_users, name, email, password) VALUES (?, ?, ?, ?)"; // Código em texto que posteriormente será aplicado ao postgresql
 
         try (Connection conn = dataSource.getConnection(); //  Cria uma conexão com o dataSource
                                                               // Create a connection with dataSource
