@@ -191,6 +191,7 @@
                         <th class="px-6 py-3">Versão Base</th>
                         <th class="px-6 py-3">Caminho</th>
                         <th class="px-6 py-3">Mudanças</th>
+                        <th class="px-6 py-3">Ações</th>
                     </tr>
                     </thead>
                     <tbody id="versoesTable" class="divide-y divide-gray-700/60"></tbody>
@@ -203,14 +204,18 @@
 <script>
     const API_BASE_URL = 'http://localhost:8080/api';
 
-    // Estado local para gerenciar o relatório/KPIs em tempo real sem precisar de reload
-    let contadorViews = 42;  // Carga inicial fictícia realista para a banca ver dados
-    let contadorDownloads = 18;
+    // Estado local recuperado do localStorage para persistência permanente entre sessões
+    let contadorViews = parseInt(localStorage.getItem('featurestore_views')) || 0;
+    let contadorDownloads = parseInt(localStorage.getItem('featurestore_downloads')) || 0;
 
     function atualizarCardsRelatorio() {
         document.getElementById('kpiViews').innerText = contadorViews;
         document.getElementById('kpiDownloads').innerText = contadorDownloads;
         document.getElementById('kpiTotal').innerText = contadorViews + contadorDownloads;
+
+        // Persiste os valores atualizados no disco local do navegador
+        localStorage.setItem('featurestore_views', contadorViews);
+        localStorage.setItem('featurestore_downloads', contadorDownloads);
     }
 
     // SISTEMA DE DATA INTELIGENTE ANTI-HACK APARENTE
@@ -375,10 +380,10 @@
                         <td class="px-6 py-3.5 text-gray-300">${ds.id_creator}</td>
                         <td class="px-6 py-3.5 text-emerald-400 font-medium">${formatarDataHora(dataLimpa, ds.id_datasets)}</td>
                         <td class="px-6 py-3.5 space-x-2 whitespace-nowrap">
-                            <button type="button" onclick="registrarAcesso(${ds.id_datasets}, 'VIEW')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded transition-colors inline-flex items-center space-x-1">
+                            <button type="button" onclick="registrarAcesso(${ds.id_datasets}, 'VIEW', 'dataset')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded transition-colors inline-flex items-center space-x-1">
                                 <i class="fa-solid fa-eye"></i> <span>View</span>
                             </button>
-                            <button type="button" onclick="registrarAcesso(${ds.id_datasets}, 'DOWNLOAD')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded transition-colors inline-flex items-center space-x-1">
+                            <button type="button" onclick="registrarAcesso(${ds.id_datasets}, 'DOWNLOAD', 'dataset')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded transition-colors inline-flex items-center space-x-1">
                                 <i class="fa-solid fa-download"></i> <span>Download</span>
                             </button>
                         </td>
@@ -404,38 +409,45 @@
                         <td class="px-6 py-3.5 text-gray-400 font-mono">${baseDisplay}</td>
                         <td class="px-6 py-3.5 text-white font-mono text-xs">${v.archive_path || '-'}</td>
                         <td class="px-6 py-3.5 text-gray-400">${v.changes || '-'}</td>
+                        <td class="px-6 py-3.5 space-x-2 whitespace-nowrap">
+                            <button type="button" onclick="registrarAcesso(${v.id_version}, 'VIEW', 'version')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded transition-colors inline-flex items-center space-x-1">
+                                <i class="fa-solid fa-eye"></i> <span>View</span>
+                            </button>
+                            <button type="button" onclick="registrarAcesso(${v.id_version}, 'DOWNLOAD', 'version')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded transition-colors inline-flex items-center space-x-1">
+                                <i class="fa-solid fa-download"></i> <span>Download</span>
+                            </button>
+                        </td>
                     </tr>`;
             });
         } catch (e) { console.error(e); }
     }
 
-    async function registrarAcesso(idDataset, tipoAcesso) {
+    async function registrarAcesso(idRef, tipoAcesso, contexto) {
+        const escopo = contexto === 'version' ? `Versão ID: ${idRef}` : `Dataset ID: ${idRef}`;
+
         if (tipoAcesso === 'VIEW') {
-            alert(`[AÇÃO: VIEW] Abrindo visualização dos dados do Dataset ID: ${idDataset}`);
-            contadorViews++; // Incrementa dinamicamente no relatório visual
+            alert(`[AÇÃO: VIEW] Abrindo visualização dos dados da ${escopo}`);
+            contadorViews++;
         } else {
-            alert(`[AÇÃO: DOWNLOAD] Iniciando o download do arquivo CSV do Dataset ID: ${idDataset}`);
+            alert(`[AÇÃO: DOWNLOAD] Iniciando o download do arquivo CSV da ${escopo}`);
             contadorDownloads++;
         }
 
-        atualizarCardsRelatorio(); // Recarrega os contadores na tela instantaneamente
+        atualizarCardsRelatorio();
 
+        // Monta o payload respeitando os campos da tabela log_access
         const payloadLog = {
             id_user: 1,
             type_access: tipoAcesso,
             date_access: new Date().toISOString()
         };
 
+        if (contexto === 'version') {
+            payloadLog.id_current_version = parseInt(idRef);
+        }
+
         try {
             console.log(`Log de auditoria preparado para tabela log_access:`, payloadLog);
-            // Integração com endpoint de logs, se houver:
-            /*
-            await fetch(`${API_BASE_URL}/access`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payloadLog)
-            });
-            */
         } catch (error) {
             console.error("Erro ao salvar log de acesso:", error);
         }
